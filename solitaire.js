@@ -1,3 +1,4 @@
+
 // const prompt=require('prompt-sync')();
 let deck1 = [],deck2=[],decktotal=[],collection=[];
 let type = ['H', 'D', 'S', 'C'];
@@ -93,6 +94,21 @@ function colselect(a){
         alert('Invalid input entered.Type the correct destination');
     }
 }
+//C h e c k    f o r    s e t      (  under constr. )
+function check(){
+    let i,j,k=0;
+    for(i=0;i<7;i++){
+      for(j=0;j<colselect(i);j++){
+        if(gamematrix[j][i].charAt[0]==cards[k]){
+           k++;
+           if(k==13){
+               collection.push()
+               break;
+           }
+        }
+      }
+    }
+}
 let collastref=5;
 //collast is the  last row index
 let col0last=5 , col1last=5 , col2last=5 , col3last=5 , col4last=5 , col5last=5 , col6last=5;
@@ -143,7 +159,7 @@ function move(){
         col6last-=count;
     }
    }
-   //Count calculation below source row
+   //Count calculation below source row to last available element
    dcurrentlastrow=colselect(dcol);
    scurrentlastrow=colselect(scol);
    if(srow!=scurrentlastrow){
@@ -236,8 +252,6 @@ function swapWithLast(gamematrix){
     console.log(col0last, col1last , col2last , col3last , col4last , col5last, col6last);
 }
 //end of card movement
-// dcurrentlastrow=colselect(dcol);
-// scurrentlastrow=colselect(scol);
 //U S E   S H U F F L E D   C A R D 
 let useflag=0;
 function use(){
@@ -254,24 +268,11 @@ function use(){
      useflag=0;
     }
 }
-
-//M A K E    S E T    I N    M A T R I X 
-function check(){
-    let i,j,k=0;
-    for(i=0;i<7;i++){
-      for(j=0;j<col0last;j++){
-        if(gamematrix[j][i].charAt[0]==cards[k]){
-           k++;
-           if(k==13){
-               collection.push()
-               break;
-           }
-        }
-      }
-    }
-}
-
-//reload 
+//Restart game
 function reload(){
-    prompt()
+    let r;
+    r=prompt("Are you sure.If yes,Type 'yes' to start the game:")
+    if(r=='yes'||r=='YES'){
+        location.reload();
+    }
 }
