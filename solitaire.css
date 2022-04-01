@@ -1,0 +1,14 @@
+.button{
+    padding-left: 41%;
+    padding-top: 10%;
+    font-style: inherit;
+}
+button{
+    size: 10vh;
+    font-size: large;   
+    
+}
+.heading{
+    font-stretch: ultra-expanded;
+    padding-left: 40%;
+}
