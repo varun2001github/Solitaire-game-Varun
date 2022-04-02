@@ -26,6 +26,7 @@ let shuffled=[];
 let currshuffled=[];
 shuffled=decktotal;
 shuffle(shuffled);
+shuffle(shuffled);
 function shuffle(a){
     a.sort((a,b)=>0.5-Math.random());
     return a;
@@ -57,7 +58,6 @@ for(let i=0;i<15;i++){
 console.log("game list ");
 console.log(matrixsource);
 const gamematrix=[];
-let fl=0,i1;
 for(let i=0;i<15;i++){
     gamematrix[i]=[];
     for(let j=0;j<7;j++){
@@ -66,15 +66,22 @@ for(let i=0;i<15;i++){
         }
         else if(i==5){
             gamematrix[i][j]=matrixsource[i][j];
-            fl=1;
         }else{
             gamematrix[i][j]="   ";
         }
    }
 }
+//collection at end
+for(let i=0;i<104;i++){
+    collection[i]="   ";
+}
 console.log(gamematrix);
 
  //  -----------------C A R D     M O V E M E N T-------------------//
+ let collastref=5;
+//collast is the  last row index
+let col0last=5 , col1last=5 , col2last=5 , col3last=5 , col4last=5 , col5last=5 , col6last=5;
+let srow , sr , scol , sc , count , i,j , a , lastindex , temp , temp1count=0 , temp2count=0 , starflag=0;
 function colselect(a){
     if(a==0){
         return col0last;
@@ -90,38 +97,64 @@ function colselect(a){
         return col5last;
     }else if(a==6){
         return col6last;
-    }else{
-        alert('Invalid input entered.Type the correct destination');
     }
 }
-//C h e c k    f o r    s e t      (  under constr. )
+//C h e c k    f o r    s e t  
+let gamecount=0,collectioninc=0;
+function setswap(gamematrix){
+   if(collectioninc<104){
+     for(j=0;j<13;j++){
+       temp=gamematrix[jselect][iselect];
+       gamematrix[jselect][iselect]=collection[collectioninc++];
+       collection= gamematrix[jselect][iselect];
+     }
+   }
+}
+let iselect,jselect;
 function check(){
-    let i,j,k=0;
+    let jselectflag=1,k=0;
     for(i=0;i<7;i++){
       for(j=0;j<colselect(i);j++){
+          //cards[] is created at top of js
         if(gamematrix[j][i].charAt[0]==cards[k]){
-           k++;
-           if(k==13){
-               collection.push()
-               break;
+           if(jselectflag){
+               jselect=j;
+               jselectflag=0;
            }
+           k++;
+        }if(k==13){
+            iselect=i;
+            break;
         }
       }
+      if(k==13){
+        gamecount+=1;
+        setswap();
+        break;
+       }
+    }
+    if(k==13){
+        k=0;
+    }
+    if(gamecount==8){
+        alert("C O N G R A T S ...Y O U   W O N....");
     }
 }
-let collastref=5;
-//collast is the  last row index
-let col0last=5 , col1last=5 , col2last=5 , col3last=5 , col4last=5 , col5last=5 , col6last=5;
-let srow , sr , scol , sc , count , i , a , lastindex , temp , temp1count=0 , temp2count=0 , starflag=0;
+//onclick card move section//
 function move(){
-   //get input source and destination row,col
-   if(fl==1){
+    //checks empty input
+    let nzflag=1;
+   //get input source and destination's row,col
       srow=prompt('Source Card Row:');
       sr=srow;  
       scol=prompt('Source Card Column:');
       sc=scol; 
       dcol=prompt('Destination column:');
-    }
+      if(srow==null || scol==null || dcol==null||srow=="undefined" || scol=="undefined" || dcol=="undefined"){
+          alert("Input cannot be empty");
+          nzflag=0;
+      }
+
    //functions
    //destination last row tempvar increment
    function dcolumnvalincrement(){
@@ -160,11 +193,11 @@ function move(){
     }
    }
    //Count calculation below source row to last available element
-   dcurrentlastrow=colselect(dcol);
-   scurrentlastrow=colselect(scol);
-   if(srow!=scurrentlastrow){
+   let dcurrentlastrow=colselect(dcol);
+   let scurrentlastrow=colselect(scol);
+   if(srow!=scurrentlastrow && nzflag==1){
       for( i=srow;i<=scurrentlastrow;i++){
-        if( (i<scurrentlastrow) && (gamematrix[i][scol]>gamematrix[i+1][scol]) ){
+        if( (i<scurrentlastrow) && ((gamematrix[i][scol].charAt(0)>gamematrix[i+1][scol].charAt(0)) )){
               temp1count+=1;
         }else if(i==scurrentlastrow){
            temp1count+=1;
@@ -179,18 +212,18 @@ function move(){
       }
     }else{
        count=1;
-    }
+   }
 function swapWithLast(gamematrix){
     temp=gamematrix[dcurrentlastrow+1][dcol];
     gamematrix[++dcurrentlastrow][dcol]=gamematrix[srow][scol];
     gamematrix[srow++][scol]=temp;
-    console.log("hello",gamematrix)
     starflag=1;
 }
    //card shift
    for(i=0;i<=count;i++){
+       if(nzflag==1){
        //checks first letter of source whether Capital alphabet
-       if((gamematrix[srow][scol].charCodeAt(0))>65 && (gamematrix[srow][scol].charCodeAt(0))<=90 ){
+       if(  ((gamematrix[srow][scol].charCodeAt(0))>65 && (gamematrix[srow][scol].charCodeAt(0))<=90) || ( (gamematrix[dcurrentlastrow][dcol].charCodeAt(0))>65 &&(gamematrix[dcurrentlastrow][dcol].charCodeAt(0))<=90) ){
             if(gamematrix[srow][scol].charAt(0)=='Q' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='K'){
                 swapWithLast(gamematrix);
             }
@@ -222,24 +255,25 @@ function swapWithLast(gamematrix){
 
         }
         //checks if first letter is a number
-        if(((gamematrix[srow][scol]).charCodeAt(0))>= 48 && (gamematrix[srow][scol].charCodeAt(0))<=57  ){
-          if(((gamematrix[srow][scol]).charAt(0) )!='1'&& (gamematrix[dcurrentlastrow][dcol]).charAt(0) !='J'){
+        else if(((gamematrix[srow][scol]).charCodeAt(0))>48 && (gamematrix[srow][scol].charCodeAt(0))<=57 && nzflag==1 ){
+          if(((gamematrix[srow][scol]).charAt(0) )!='1'&& (gamematrix[srow][scol]).charAt(0) !='9' && (gamematrix[dcurrentlastrow][dcol]).charAt(0) !='J'){
              if(  ((gamematrix[srow][scol]).charAt(0))  <  ((gamematrix[dcurrentlastrow][dcol]).charAt(0))   ){
                 swapWithLast(gamematrix);
              }
              else{
-               alert("INVALID MOVE");
+               alert("INVALID MOVE n");
                break;
              }
-          }else if((gamematrix[srow][scol]).charAt(0) =='1'){
-            if((gamematrix[srow][scol].charAt(0))=='1' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='J'){
+          }else if((gamematrix[srow][scol]).charAt(0) =='9' && (gamematrix[dcurrentlastrow][dcol]).charAt(0) !='1'){
                 swapWithLast(gamematrix);
-            }else{
+          }else if((gamematrix[srow][scol]).charAt(0) =='1' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='J'){
+                swapWithLast(gamematrix);
+          }else{
                 alert("Invalid");
                 break;
-            }
           }
         }
+      }
      }
     //changing star into value
     if(starflag==1){
@@ -248,11 +282,14 @@ function swapWithLast(gamematrix){
           scolumnvaldecrement();
           starflag=0;
     }
+    if(nzflag==1){
     console.log(gamematrix);
     console.log(col0last, col1last , col2last , col3last , col4last , col5last, col6last);
+    }
+    check();
 }
 //end of card movement
-//U S E   S H U F F L E D   C A R D 
+//U S E   R E M A I N I N G   C A R D 
 let useflag=0;
 function use(){
     for(let i=0;i<7;i++){
@@ -267,8 +304,10 @@ function use(){
      console.log(col0last,col1last,col2last,col3last,col4last,col5last,col6last)
      useflag=0;
     }
+    check();
 }
-//Restart game
+
+//R E S T A R T    G A M E
 function reload(){
     let r;
     r=prompt("Are you sure.If yes,Type 'yes' to start the game:")

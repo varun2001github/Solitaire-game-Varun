@@ -1,14 +1,41 @@
-.button{
-    padding-left: 41%;
-    padding-top: 10%;
-    font-style: inherit;
+.button-container{
+  display: flex;
+  flex-direction: column;
+  padding-left: 44%;
+  padding-top: 5%;
 }
+.button-container>div{
+    border: 5px;
+  }
 button{
-    size: 10vh;
-    font-size: large;   
+    height: 10vh;
+    width: 50vh;
     
 }
+.btn1{
+    padding:10px;
+    flex: 1;
+    height: 24px;
+}
+.btn2{
+    padding:10px;
+    flex: 1;
+    height: 24px;
+}
+.btn3{
+    padding: 10px;
+    flex: 1;
+    height: 24px;
+}
+
 .heading{
     font-stretch: ultra-expanded;
     padding-left: 40%;
+    padding-top: 3%;
+    display: flex;
+    background-color: rgb(238, 206, 164);
+    height: 10vh;
+}
+body{
+    background-color: beige;
 }
