@@ -39,7 +39,7 @@ let slen=shuffled.length;
 //----------G A M E   A R R A Y   C R E A T I O N    F R O M    S H U F F L E D--------//
 const matrixsource=[] ;
 const gamematrix=[];
-for(let i=0;i<20;i++){
+for(let i=0;i<23;i++){
     matrixsource[i]=[];
     gamematrix[i]=[];
     let j1;
@@ -82,7 +82,7 @@ console.log(gamematrix);
  let collastref=5;
 //collast is the  last row index
 let col0last=5 , col1last=5 , col2last=5 , col3last=5 , col4last=5 , col5last=5 , col6last=5;
-let srow , sr , scol , sc , count , i , j , a , lastindex , temp , temp1count=0 , temp2count=1 , starflag=0;
+let srow , sr,sr1 , scol , sc , count , i , j , a , lastindex , temp , temp1count=0 , temp2count=1 , starflag=0;
 function colselect(a){
     if(a==0){
         return col0last;
@@ -146,7 +146,8 @@ function move(){
     let nzflag=1;
    //get input source and destination's row,col
       srow=prompt('Source Card Row:');
-      sr=srow;  
+      sr=srow; 
+      sr1=srow; 
       scol=prompt('Source Card Column:');
       sc=scol; 
       dcol=prompt('Destination column:');
@@ -193,69 +194,68 @@ function move(){
     }
    }
    //
-//    function checknextmin(a,sc){
-//        //if alphabet
-//        if ((gamematrix[a][scol].charCodeAt(0)>65  &&  (gamematrix[a][sc].charCodeAt(0))<=90)   ){
-//           if(gamematrix[a][scol].charAt(0)=='Q' && gamematrix[a+1][sc].charAt(0)=='K'){
-//             return 0;
-//           }
-//           else if(gamematrix[a][scol].charAt(0)=='K' && gamematrix[a+1][sc].charAt(0)=='Q'){
-//              return 1;
-//           }
-//           else if(gamematrix[a][scol].charAt(0)=='J' && gamematrix[a+1][sc].charAt(0)=='Q'){
-//               return 0;
-//           }
-//           else if(gamematrix[a][scol].charAt(0)=='Q' && (gamematrix[a+1][sc]).charAt(0)=='J'){
-//               return 1;
-//           }
-//           else if((gamematrix[a][scol]).charAt(0)=='A' && (gamematrix[a+1][sc]).charAt(0)=='2'){
-//               return 0;
-//           }
-//           else if((gamematrix[a][scol]).charAt(0)=='J' && (gamematrix[a+1][sc]).charAt(0)=='1'){
-//             return 1;
-//           }
-//        //if number
-//        }else if((gamematrix[a][scol].charCodeAt(0))>48 && (gamematrix[a][sc].charCodeAt(0))<=57  ){
-//            if((gamematrix[a][scol].charAt(0))=='1' && (gamematrix[a+1][sc]).charAt(0)=='J'){
-//               return 0;
-//            }  
-//            else if((gamematrix[a][scol].charAt(0))=='2' && (gamematrix[a+1][sc]).charAt(0)=='A'){
-//               return 1;
-//            }
-//            else if(  (gamematrix[a][scol].charCodeAt(0)) > (gamematrix[a+1][sc]).charCodeAt(0)  ){
-//               return 1;
-//            }else if(   (gamematrix[a][scol].charCodeAt(0)) < (gamematrix[a+1][sc]).charCodeAt(0)  ){
-//               return 0;
-//            }
-//        }
-//    }
+   function checknextmin(){
+       //if alphabet
+       if ((gamematrix[sr][scol].charCodeAt(0)>65  &&  (gamematrix[sr+1][scol].charCodeAt(0))<=90)   ){
+          if(gamematrix[sr][scol].charAt(0)=='Q' && gamematrix[++sr][scol].charAt(0)=='K'){
+            return 0;
+          }
+          else if(gamematrix[sr][scol].charAt(0)=='K' && gamematrix[++sr][scol].charAt(0)=='Q'){
+             return 1;
+          }
+          else if(gamematrix[sr][scol].charAt(0)=='J' && gamematrix[++sr][scol].charAt(0)=='Q'){
+              return 0;
+          }
+          else if(gamematrix[sr][scol].charAt(0)=='Q' && (gamematrix[++sr][scol]).charAt(0)=='J'){
+              return 1;
+          }
+          else if((gamematrix[sr][scol]).charAt(0)=='A' && (gamematrix[++sr][scol]).charAt(0)=='2'){
+              return 0;
+          }
+          else if((gamematrix[sr][scol]).charAt(0)=='J' && (gamematrix[++sr][scol]).charAt(0)=='1'){
+            return 1;
+          }
+       //if number
+       }else if((gamematrix[sr][scol].charCodeAt(0))>48 && (gamematrix[srow][scol].charCodeAt(0))<=57  ){
+           if((gamematrix[sr][scol].charAt(0))=='1' && (gamematrix[++sr][scol]).charAt(0)=='J'){
+              return 0;
+           }  
+           else if((gamematrix[sr][scol].charAt(0))=='2' && (gamematrix[++sr][scol]).charAt(0)=='A'){
+              return 1;
+           }
+           else if(  (gamematrix[sr][scol].charCodeAt(0)) > (gamematrix[++sr][scol]).charCodeAt(0)  ){
+              return 1;
+           }else if(   (gamematrix[sr][scol].charCodeAt(0)) < (gamematrix[++sr][scol]).charCodeAt(0)  ){
+              return 0;
+           }
+       }
+   }
    //Count calculation below source row to last available element
    let dcurrentlastrow=colselect(dcol);
    let scurrentlastrow=colselect(scol);
    count=0;
-//    if(srow==scurrentlastrow && nzflag==1){
+   if(srow!=scurrentlastrow && nzflag==1){
       for( i=srow;i<=scurrentlastrow;i++){
-          count++;
+        //   count++;
+        if(i<scurrentlastrow && checknextmin()==1){
+              temp1count+=1;
+        }
+        if(i==scurrentlastrow){
+           temp1count+=1;
+        }
+        temp2count+=1;
+        if(temp1count==temp2count ){
+            count=temp2count;
+        }else if(i==scurrentlastrow && temp1count!=temp2count){
+            alert('Invalid Selection of source');
+            break;
+        }
       }
-    //     if(i<scurrentlastrow && checknextmin(i,sc)==1){
-    //           temp1count+=1;
-    //     }
-    //     if(i==scurrentlastrow){
-    //        temp1count+=1;
-    //     }
-    //     temp2count+=1;
-    //     if(temp1count==temp2count ){
-    //         count=temp2count;
-    //     }else if(i==scurrentlastrow && temp1count==temp2count){
-    //         alert('Invalid Selection of source');
-    //         break;
-    //     }
-    //   }
-    //   temp1count=0;
-    //   temp2count=0;
-    // }else if(srow==scurrentlastrow && nzflag==1){
-    //    count=1;
-//    }
+      temp1count=0;
+      temp2count=0;
+    }else if(srow==scurrentlastrow && nzflag==1){
+       count=1;
+   }
     function swapWithLast(gamematrix){
         temp=gamematrix[dcurrentlastrow+1][dcol];
         gamematrix[dcurrentlastrow+1][dcol]=gamematrix[srow][scol];
@@ -338,8 +338,10 @@ function move(){
       }
      }
     //changing star into value
-    if(  starflag==1   &&   gamematrix[sr-1][sc]==" * "  ){
-          gamematrix[sr-1][sc]=matrixsource[sr-1][sc];
+    sr=srow;
+    sc=scol;
+    if(  starflag==1   &&   gamematrix[sr1-1][sc]==" * "  ){
+          gamematrix[sr1-1][sc]=matrixsource[sr1-1][sc];
           starflag=0;
     }
     if(nzflag==1){
