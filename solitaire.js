@@ -94,12 +94,12 @@ function colselect(a){
 }
 //C h e c k    f o r    s e t  
 let gamecount=0,collectioninc=0,iselect,jselect;;
-function setswap(gamematrix){
+function setswap(jselect,iselect){
    if(collectioninc<104){
-     for(j=0;j<13;j++){
-       temp=gamematrix[jselect][iselect];
-       gamematrix[jselect][iselect]=collection[collectioninc++];
-       collection= gamematrix[jselect][iselect];
+     for(j=jselect;j<colselect(iselect);j++){
+       temp=gamematrix[j][iselect];
+       gamematrix[j][iselect]=collection[collectioninc++];
+       collection=gamematrix[j][iselect];
      }
    }
 }
@@ -109,7 +109,7 @@ function check(){
     for(i=0;i<7;i++){
       for(j=0;j<colselect(i);j++){
           //cards[] is created at top of js
-        if(gamematrix[j][i].charAt[0]==cards[k]){
+        if(gamematrix[j][i].charAt(0)==cards[k]){
            if(jselectflag==1){
                jselect=j;
                jselectflag=0;
@@ -122,7 +122,7 @@ function check(){
       }
       if(k==13){
         gamecount+=1;
-        setswap();
+        setswap(jselect,iselect);
         break;
        }
     }
@@ -135,6 +135,18 @@ function check(){
 }
 //onclick card move section//
 function move(){
+    // var tempmat=[];
+    // let tvar1=0,tvar2=0,cvar=0;
+    // for(tvar1=0;tvar1<=)
+    // tempmat[tvar1]=[];
+    // for(tvar2=0;tvar2<15;tvar1++){
+    //     tempmat[tvar1][0]=5;
+    //     tempmat[tvar1][1]=9;
+    //     if(tvar2>=2){
+    //       tempmat[tvar2]=cards[cvar++];
+    //     }
+    // }
+    // console.log(tempmat)
     //checks empty input
     let nzflag=1;
    //get input source and destination's row,col
@@ -222,14 +234,17 @@ function move(){
                     else if((gamematrix[i][scol].charAt(0))=='2' && (gamematrix[i+1][scol]).charAt(0)=='A'){
                         return 1;
                     }
+                    else if((gamematrix[i][scol].charAt(0))=='9' && (gamematrix[i+1][scol]).charAt(0)=='8'){
+                        return 1;
+                    }
                     else if(  (gamematrix[i][scol].charCodeAt(0)-1) == ((gamematrix[i+1][scol]).charCodeAt(0))  ){
                         return 1;
                     }else{
                         return 0;
                     }
             }
-       }else if(i==scurrentlastrow){
-        return 1;
+        }else if(i==scurrentlastrow){
+         return 1;
        }
    }
    //Count calculation below source row to last available element
@@ -244,6 +259,7 @@ function move(){
             cm=checknextmin(i);
             if(i<=scurrentlastrow && cm==1){
                  temp1count+=1;
+                 console.log(temp1count);
             }
         }
         console.log(temp1count);
