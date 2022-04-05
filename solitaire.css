@@ -1,32 +1,38 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+/* buttons */
 .button-container{
   display: flex;
   flex-direction: column;
-  padding-left: 44%;
-  padding-top: 5%;
+  padding-left: 10vh;
+  padding-top: 10vh;
 }
 .button-container>div{
     border: 5px;
   }
 button{
     height: 10vh;
-    width: 50vh;
-    
+    width: 30vh;
 }
 .btn1{
     padding:10px;
-    flex: 1;
-    height: 24px;
+    width: 10%;
+    flex:1;
 }
 .btn2{
     padding:10px;
-    flex: 1;
-    height: 24px;
+    flex:1;
+    width: 10%;
 }
 .btn3{
     padding: 10px;
-    flex: 1;
-    height: 24px;
+    flex: 21;
+    height: 10px;
 }
+/* buttons */
 
 .heading{
     font-stretch: ultra-expanded;
@@ -38,4 +44,24 @@ button{
 }
 body{
     background-color: beige;
+}
+ .matrix-container{
+    padding-left: 50px;
+    display: inline-block;
+}
+
+.column_indicators{
+    display: flex;
+    padding-left: 1px;
+}
+.row_indicators{
+    display: inline-block;
+}
+.tb-bt{
+    display:flex;
+    justify-content: space-around;
+
+}
+td{
+    padding-left: 40px;
 }

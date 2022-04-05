@@ -1,7 +1,7 @@
 
 // const prompt=require('prompt-sync')();
 let deck1 = [],deck2=[],decktotal=[],collection=[];
-let type = ['H', 'D', 'S', 'C'];
+let type = ['S', 'S', 'S', 'S'];
 let cards = ['K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2','A'];
 let k = 0,c = 0;
 //Card creation1
@@ -42,7 +42,6 @@ const gamematrix=[];
 for(let i=0;i<23;i++){
     matrixsource[i]=[];
     gamematrix[i]=[];
-    let j1;
     for(let j=0;j<7;j++){
         if(i<5){
             matrixsource[i][j]=currshuffled.pop();
@@ -59,17 +58,10 @@ for(let i=0;i<23;i++){
 console.log("game list ");
 console.log(matrixsource);
 
-for(let i=0;i<20;i++){
-    
+for(let i=0;i<23;i++){
     for(let j=0;j<7;j++){
-        if(i<5){
-          
-        }
-        else if(i==5){
-            
-        }else{
-            
-        }
+       var str=i+"_"+j;
+       document.getElementById(str).innerHTML=gamematrix[i][j];
    }
 }
 //collection at end
@@ -113,6 +105,7 @@ function setswap(gamematrix){
 }
 function check(){
     let jselectflag=1,k=0;
+    console.log("COLLECTIONS:"+gamecount);
     for(i=0;i<7;i++){
       for(j=0;j<colselect(i);j++){
           //cards[] is created at top of js
@@ -145,12 +138,14 @@ function move(){
     //checks empty input
     let nzflag=1;
    //get input source and destination's row,col
-      srow=prompt('Source Card Row:');
+      srow=parseInt(prompt('Source Card Row:'));
       sr=srow; 
       sr1=srow; 
-      scol=prompt('Source Card Column:');
+      scol=parseInt(prompt('Source Card Column:'));
       sc=scol; 
-      dcol=prompt('Destination column:');
+      dcol=parseInt(prompt('Destination column:'));
+      console.log(sr+" "+scol);
+    //   console.log(gamematrix[sr+1][sc]);
       if(srow==null || scol==null || dcol==null||srow=="undefined" || scol=="undefined" || dcol=="undefined"){
           alert("Input cannot be empty");
           nzflag=0;
@@ -194,67 +189,76 @@ function move(){
     }
    }
    //
-   function checknextmin(){
+   function checknextmin(i){
+       if(i<scurrentlastrow){
        //if alphabet
-       if ((gamematrix[sr][scol].charCodeAt(0)>65  &&  (gamematrix[sr+1][scol].charCodeAt(0))<=90)   ){
-          if(gamematrix[sr][scol].charAt(0)=='Q' && gamematrix[++sr][scol].charAt(0)=='K'){
-            return 0;
-          }
-          else if(gamematrix[sr][scol].charAt(0)=='K' && gamematrix[++sr][scol].charAt(0)=='Q'){
-             return 1;
-          }
-          else if(gamematrix[sr][scol].charAt(0)=='J' && gamematrix[++sr][scol].charAt(0)=='Q'){
-              return 0;
-          }
-          else if(gamematrix[sr][scol].charAt(0)=='Q' && (gamematrix[++sr][scol]).charAt(0)=='J'){
-              return 1;
-          }
-          else if((gamematrix[sr][scol]).charAt(0)=='A' && (gamematrix[++sr][scol]).charAt(0)=='2'){
-              return 0;
-          }
-          else if((gamematrix[sr][scol]).charAt(0)=='J' && (gamematrix[++sr][scol]).charAt(0)=='1'){
-            return 1;
-          }
-       //if number
-       }else if((gamematrix[sr][scol].charCodeAt(0))>48 && (gamematrix[srow][scol].charCodeAt(0))<=57  ){
-           if((gamematrix[sr][scol].charAt(0))=='1' && (gamematrix[++sr][scol]).charAt(0)=='J'){
-              return 0;
-           }  
-           else if((gamematrix[sr][scol].charAt(0))=='2' && (gamematrix[++sr][scol]).charAt(0)=='A'){
-              return 1;
-           }
-           else if(  (gamematrix[sr][scol].charCodeAt(0)) > (gamematrix[++sr][scol]).charCodeAt(0)  ){
-              return 1;
-           }else if(   (gamematrix[sr][scol].charCodeAt(0)) < (gamematrix[++sr][scol]).charCodeAt(0)  ){
-              return 0;
-           }
+          if ((gamematrix[srow][scol].charCodeAt(0)>65  &&  (gamematrix[srow][scol].charCodeAt(0))<=90)  ){
+                    if(gamematrix[i][scol].charAt(0)=='Q' && gamematrix[i+1][scol].charAt(0)=='K'){
+                        return 0;
+                    }
+                    else if(gamematrix[i][scol].charAt(0)=='K' && gamematrix[i+1][scol].charAt(0)=='Q'){
+                        return 1;
+                    }
+                    else if(gamematrix[i][scol].charAt(0)=='J' && gamematrix[i+1][scol].charAt(0)=='Q'){
+                        return 0;
+                    }
+                    else if(gamematrix[i][scol].charAt(0)=='Q' && (gamematrix[i+1][scol]).charAt(0)=='J'){
+                        return 1;
+                    }
+                    else if((gamematrix[i][scol]).charAt(0)=='A' && (gamematrix[i+1][scol]).charAt(0)=='2'){
+                        return 0;
+                    }
+                    else if((gamematrix[i][scol]).charAt(0)=='J' && (gamematrix[i+1][scol]).charAt(0)=='1'){
+                        return 1;
+                    }
+            //if number
+           }else if((gamematrix[i][scol].charCodeAt(0))>47 && (gamematrix[srow][scol].charCodeAt(0))<57  ){
+                    if((gamematrix[i][scol].charAt(0))=='1' && (gamematrix[i+1][scol]).charAt(0)=='J'){
+                        return 0;
+                    }
+                    else if((gamematrix[i][scol].charAt(0))=='1' && (gamematrix[i+1][scol]).charAt(0)=='9'){
+                        return 1;
+                    }  
+                    else if((gamematrix[i][scol].charAt(0))=='2' && (gamematrix[i+1][scol]).charAt(0)=='A'){
+                        return 1;
+                    }
+                    else if(  (gamematrix[i][scol].charCodeAt(0)-1) == ((gamematrix[i+1][scol]).charCodeAt(0))  ){
+                        return 1;
+                    }else{
+                        return 0;
+                    }
+            }
+       }else if(i==scurrentlastrow){
+        return 1;
        }
    }
    //Count calculation below source row to last available element
    let dcurrentlastrow=colselect(dcol);
    let scurrentlastrow=colselect(scol);
-   count=0;
+   let starflag1=0;
+   count=0,temp1count=0,temp2count=0;
    if(srow!=scurrentlastrow && nzflag==1){
       for( i=srow;i<=scurrentlastrow;i++){
-        //   count++;
-        if(i<scurrentlastrow && checknextmin()==1){
-              temp1count+=1;
+            temp2count+=1;
+            let cm;
+            cm=checknextmin(i);
+            if(i<=scurrentlastrow && cm==1){
+                 temp1count+=1;
+            }
         }
-        if(i==scurrentlastrow){
-           temp1count+=1;
-        }
-        temp2count+=1;
+        console.log(temp1count);
+        console.log(temp2count);
         if(temp1count==temp2count ){
             count=temp2count;
-        }else if(i==scurrentlastrow && temp1count!=temp2count){
+            starflag1=1;
+        }else{
             alert('Invalid Selection of source');
-            break;
         }
-      }
-      temp1count=0;
-      temp2count=0;
+        temp1count=0;
+        temp2count=0;
     }else if(srow==scurrentlastrow && nzflag==1){
        count=1;
+       starflag1=1;
    }
     function swapWithLast(gamematrix){
         temp=gamematrix[dcurrentlastrow+1][dcol];
@@ -274,44 +278,39 @@ function move(){
         if(  ( (gamematrix[srow][scol].charCodeAt(0))>64 && (gamematrix[srow][scol].charCodeAt(0))<=90 ) || ( (gamematrix[dcurrentlastrow][dcol].charCodeAt(0))>65 &&(gamematrix[dcurrentlastrow][dcol].charCodeAt(0))<=90) ){
             console.log("char");
             if(gamematrix[srow][scol].charAt(0)=='Q' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='K'){
-                console.log(dcol);
                 swapWithLast(gamematrix);
-                console.log(dcol);
-                console.log(scol);
             }
             else if(gamematrix[srow][scol].charAt(0)=='K' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='Q'){
-               alert("invalid move");
-               console.log(dcol);
+               alert("Invalid move");
+               starflag=0;
                 break;
             }
             else if(gamematrix[srow][scol].charAt(0)=='J' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='Q'){
                 swapWithLast(gamematrix);
-                console.log(dcol);
-                console.log(scol);
             }
             else if(gamematrix[srow][scol].charAt(0)=='Q' && (gamematrix[dcurrentlastrow][dcol]).charAt(0)=='J'){
                 alert("Invalid move");
+                starflag=0;
                 break;
             }
             else if((gamematrix[srow][scol]).charAt(0)=='A' && (gamematrix[dcurrentlastrow][dcol]).charAt(0)=='2'){
-                console.log("ace");
-                console.log(dcol);
-                console.log(scol);
                 swapWithLast(gamematrix);
             }
             else if((gamematrix[srow][scol].charAt(0))=='2' && (gamematrix[dcurrentlastrow][dcol]).charAt(0)=='A'){
                 alert("Invalid move");
-                console.log(dcol);
+                starflag=0;
                 break;
             }
             else if((gamematrix[srow][scol].charAt(0))=='1' && (gamematrix[dcurrentlastrow][dcol]).charAt(0)=='J'){
                 swapWithLast(gamematrix);
-                console.log(dcol);
-                console.log(scol);
             }
             else if((gamematrix[srow][scol]).charAt(0)=='J' && (gamematrix[dcurrentlastrow][dcol]).charAt(0)=='1'){
-                alert("invalid move");
+                alert("Invalid move");
+                starflag=0;
                 break;
+            }else{
+                alert("Invalid move");
+                starflag=0;
             }
 
          }
@@ -319,11 +318,12 @@ function move(){
          else if(((gamematrix[srow][scol]).charCodeAt(0))>48 && (gamematrix[srow][scol].charCodeAt(0))<=57  ){
              console.log("num");
           if(((gamematrix[srow][scol]).charAt(0) )!='1'&& (gamematrix[srow][scol]).charAt(0) !='9' && (gamematrix[dcurrentlastrow][dcol]).charAt(0) !='J'){
-             if(  ((gamematrix[srow][scol]).charCodeAt(0))  <  ((gamematrix[dcurrentlastrow][dcol]).charCodeAt(0))   ){
+             if(  ((gamematrix[srow][scol]).charCodeAt(0))  ==  ((gamematrix[dcurrentlastrow][dcol]).charCodeAt(0)-1)   ){
                 swapWithLast(gamematrix);
              }
              else{
-               alert("INVALID MOVE");
+               alert("Invalid move");
+               starflag=0;
                break;
              }
           }else if((gamematrix[srow][scol]).charAt(0) =='9' && (gamematrix[dcurrentlastrow][dcol]).charAt(0) =='1'){
@@ -331,7 +331,8 @@ function move(){
           }else if((gamematrix[srow][scol]).charAt(0) =='1' && gamematrix[dcurrentlastrow][dcol].charAt(0)=='J'){
                 swapWithLast(gamematrix);
           }else{
-                alert("Invalid");
+                alert("Invalid move");
+                starflag=0;
                 break;
           }
         }
@@ -340,7 +341,7 @@ function move(){
     //changing star into value
     sr=srow;
     sc=scol;
-    if(  starflag==1   &&   gamematrix[sr1-1][sc]==" * "  ){
+    if(  starflag==1  &&  starflag1==1 &&   gamematrix[sr1-1][sc]==" * "  ){
           gamematrix[sr1-1][sc]=matrixsource[sr1-1][sc];
           starflag=0;
     }
@@ -349,6 +350,12 @@ function move(){
     console.log(col0last, col1last , col2last , col3last , col4last , col5last, col6last);
     }
     check();
+    for(let i=0;i<23;i++){
+        for(let j=0;j<7;j++){
+           var str=i+"_"+j;
+           document.getElementById(str).innerHTML=gamematrix[i][j];
+       }
+    }
 }
 //end of card movement
 //U S E   R E M A I N I N G   C A R D 
@@ -367,6 +374,12 @@ function use(){
      useflag=0;
     }
     check();
+    for(let i=0;i<23;i++){
+        for(let j=0;j<7;j++){
+           var str=i+"_"+j;
+           document.getElementById(str).innerHTML=gamematrix[i][j];
+       }
+    }
 }
 
 //R E S T A R T    G A M E
