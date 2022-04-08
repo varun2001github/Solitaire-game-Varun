@@ -60,8 +60,15 @@ body{
 .tb-bt{
     display:flex;
     justify-content: space-around;
-
+    
 }
 td{
     padding-left: 40px;
 }
+/* .tablemain{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-left: 10vh;
+    padding-top: 10vh;
+} */
