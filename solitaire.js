@@ -96,40 +96,49 @@ let gamecount=0,collectioninc=0,iselect,jselect;;
 function setswap(gamematrix){
    if(collectioninc<104){
      for(j=0;j<13;j++){
-       temp=gamematrix[jselect][iselect];
-       gamematrix[jselect][iselect]=collection[collectioninc++];
-       collection= gamematrix[jselect][iselect];
+       temp=gamematrix[jselect][dcol];
+       gamematrix[jselect][dcol]=collection[collectioninc++];
+       collection[collectioninc]= gamematrix[jselect++][dcol];
      }
+     jselect=0;
    }
 }
-function check(){
+function check(dcol){
     let jselectflag=1,k=0;
     console.log("COLLECTIONS:"+gamecount);
-    for(i=0;i<7;i++){
-      for(j=0;j<colselect(i);j++){
-          //cards[] is created at top of js
-        if(gamematrix[j][i].charAt[0]==cards[k]){
-           if(jselectflag==1){
+    for(j=0;j<=colselect(dcol);j++){
+        //cards[] is created at top of js
+        if(gamematrix[j][dcol].charAt(0)==cards[k].charAt(0)){
+            if(jselectflag==1){
                jselect=j;
                jselectflag=0;
-           }
-           k++;
-        }if(k==13){
-            iselect=i;
-            break;
+            }
+            k++;
+        }else if(gamematrix[j][dcol].charAt(0)!=cards[k].charAt(0)){
+            jselectflag=1;
+            k=0;
+            if(gamematrix[j][dcol].charAt(0)==cards[k].charAt(0)){
+              jselectflag=1;
+                if(jselectflag==1){
+                  jselect=j;
+                  jselectflag=0;
+                }
+              k++;
+            }
         }
-      }
-      if(k==13){
-        gamecount+=1;
-        setswap();
-        break;
+        console.log("k value is:"+k);
+        if(k==13){
+          gamecount+=1;
+          setswap();
+          k=0;
+          break;
+        }else if(j==colselect(dcol) && k<13){
+          jselectflag=1;
+          k=0;
        }
     }
-    if(k==13){
-        k=0;
-    }
     if(gamecount==8){
-        alert("C O N G R A T S ...Y O U   W O N....");
+        alert("C O N G R A T S ...  Y  O  U     W  O  N...");
     }
 }
 //onclick card move section//
@@ -348,7 +357,7 @@ function move(){
     console.log(gamematrix);
     console.log(col0last, col1last , col2last , col3last , col4last , col5last, col6last);
     }
-    check();
+    check(dcol);
     for(let i=0;i<23;i++){
         for(let j=0;j<7;j++){
            var str=i+"_"+j;
